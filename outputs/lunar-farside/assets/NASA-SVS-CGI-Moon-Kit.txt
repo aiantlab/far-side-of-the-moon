@@ -1,0 +1,12 @@
+NASA SVS CGI Moon Kit
+https://svs.gsfc.nasa.gov/4720/
+
+Credit: NASA's Scientific Visualization Studio.
+Visualizer: Ernie Wright.
+
+Source products used:
+- lroc_color_2k.jpg, derived from LROC Wide Angle Camera color data.
+- ldem_3_8bit.jpg, derived from LRO Laser Altimeter elevation data.
+
+The project converts these products to smaller WebP files for browser
+rendering. The original downloads are retained under work/assets/nasa/.

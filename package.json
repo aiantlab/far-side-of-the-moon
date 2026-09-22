@@ -1,0 +1,31 @@
+{
+  "name": "far-side-of-the-moon",
+  "version": "1.0.0",
+  "description": "Far Side of the Moon interactive observatory built with Vue 3.5, Three.js and Anime.js 4.5.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild work/lunar-vue-app.js --bundle --format=iife --target=es2020 --minify --legal-comments=none --loader:.webp=dataurl --define:process.env.NODE_ENV='\"production\"' --define:__VUE_OPTIONS_API__=true --define:__VUE_PROD_DEVTOOLS__=false --define:__VUE_PROD_HYDRATION_MISMATCH_DETAILS__=false --outfile=outputs/lunar-farside/app.bundle.js",
+    "test": "node work/lunar-cdp-test.mjs"
+  },
+  "keywords": [
+    "moon",
+    "lunar-far-side",
+    "threejs",
+    "vue",
+    "chang-e",
+    "nasa",
+    "lro"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@fontsource/archivo-black": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "animejs": "^4.5.0",
+    "three": "^0.186.0",
+    "vue": "^3.5.43"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

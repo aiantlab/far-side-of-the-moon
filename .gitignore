@@ -1,0 +1,15 @@
+node_modules/
+.npm-cache/
+npm-debug.log*
+work/.chrome-*/
+work/*.png
+work/.obsidian-sync.log
+work/reference-hls-official.jpg
+outputs/lunar-farside/.chrome-*/
+*.log
+.DS_Store
+Thumbs.db
+.obsidian-sync.local.json
+PROJECT_MEMORY.md
+release/
+scripts/
