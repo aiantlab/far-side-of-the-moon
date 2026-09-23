@@ -1,6 +1,6 @@
 {
   "name": "far-side-of-the-moon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Far Side of the Moon interactive observatory built with Vue 3.5, Three.js and Anime.js 4.5.",
   "private": true,
   "type": "module",

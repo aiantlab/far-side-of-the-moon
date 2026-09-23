@@ -57,6 +57,7 @@ const target = await getPageTarget();
 const socket = new WebSocket(target.webSocketDebuggerUrl);
 const pending = new Map();
 const errors = [];
+const failedResponses = [];
 let messageId = 0;
 
 function command(method, params = {}) {
@@ -84,6 +85,16 @@ socket.addEventListener("message", (event) => {
   if (message.method === "Log.entryAdded" && message.params.entry.level === "error") {
     errors.push(message.params.entry.text);
   }
+
+  if (
+    message.method === "Network.responseReceived"
+    && message.params.response.status >= 400
+  ) {
+    failedResponses.push({
+      status: message.params.response.status,
+      url: message.params.response.url
+    });
+  }
 });
 
 await new Promise((resolve, reject) => {
@@ -94,6 +105,7 @@ await new Promise((resolve, reject) => {
 await command("Page.enable");
 await command("Runtime.enable");
 await command("Log.enable");
+await command("Network.enable");
 await command("Page.navigate", { url: pageUrl });
 await delay(5200);
 
@@ -128,7 +140,7 @@ const initial = await evaluate(`({
 
 if (process.env.LUNAR_QUICK_SCREENSHOT === "1") {
   await screenshot("lunar-farside-desktop-check.png");
-  console.log(JSON.stringify({ initial, errors }, null, 2));
+  console.log(JSON.stringify({ initial, errors, failedResponses }, null, 2));
   socket.close();
   chrome.kill();
   await delay(300);
