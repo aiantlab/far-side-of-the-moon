@@ -8,7 +8,6 @@ import {
   ref
 } from "vue/dist/vue.esm-bundler.js";
 import { animate, createTimeline } from "animejs";
-import { createLunarFarSideScene } from "./lunar-vue-scene.js";
 
 const BrandMark = {
   template: `
@@ -895,8 +894,11 @@ const App = {
 
     const loadStartedAt = performance.now();
 
-    onMounted(() => {
+    onMounted(async () => {
       try {
+        const { createLunarFarSideScene } = await import(
+          "./lunar-vue-scene.js"
+        );
         sceneApi.value = createLunarFarSideScene(canvasRef.value, {
           onTelemetry: handleTelemetry,
           onState: handleState,
