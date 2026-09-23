@@ -2,6 +2,7 @@ node_modules/
 .npm-cache/
 npm-debug.log*
 work/.chrome-*/
+work/web-build-test/
 work/*.png
 work/.obsidian-sync.log
 work/reference-hls-official.jpg
