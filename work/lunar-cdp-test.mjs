@@ -107,7 +107,7 @@ await command("Runtime.enable");
 await command("Log.enable");
 await command("Network.enable");
 await command("Page.navigate", { url: pageUrl });
-await delay(5200);
+await delay(process.env.LUNAR_TEST_URL ? 16000 : 5200);
 
 async function evaluate(expression) {
   const result = await command("Runtime.evaluate", {
