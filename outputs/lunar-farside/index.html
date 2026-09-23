@@ -64,6 +64,7 @@
       min-height: 100%;
       margin: 0;
       overflow: hidden;
+      overscroll-behavior: none;
       background: var(--void);
       color: var(--ink);
       font-family: var(--ui-font);
@@ -83,6 +84,7 @@
       width: 100%;
       height: 100%;
       cursor: grab;
+      overscroll-behavior: none;
       touch-action: none;
     }
 
@@ -1150,6 +1152,18 @@
       text-transform: uppercase;
     }
 
+    .boot-open {
+      color: #ffffff;
+      font-family: var(--display-font) !important;
+      font-size: 3.2rem !important;
+      font-weight: 400 !important;
+      letter-spacing: 0 !important;
+      line-height: 0.9;
+      text-shadow:
+        0 0 18px rgb(255 255 255 / 20%),
+        0 0 42px rgb(255 122 69 / 18%);
+    }
+
     .boot-screen span {
       color: var(--muted);
       font-size: 0.58rem;
@@ -1341,8 +1355,8 @@
 </head>
 <body>
   <div class="boot-screen">
-    <strong>Far Side of the Moon</strong>
-    <span>Loading lunar observatory...</span>
+    <strong class="boot-open">OPEN</strong>
+    <span>Far Side of the Moon</span>
   </div>
   <div id="app"></div>
 <link rel="preload" href="./app.bundle.js?v=83" as="script">

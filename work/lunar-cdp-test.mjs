@@ -375,6 +375,36 @@ const mobile = await evaluate(`(() => {
   };
 })()`);
 
+const pinchBefore = await evaluate(`({
+  zoom: window.__LUNAR_FARSIDE_DEBUG__?.read().zoom,
+  zoomTarget: window.__LUNAR_FARSIDE_DEBUG__?.read().zoomTarget
+})`);
+await evaluate(`(() => {
+  const canvas = document.querySelector(".scene-canvas");
+  const send = (type, id, x) => canvas.dispatchEvent(new PointerEvent(type, {
+    pointerId: id,
+    pointerType: "touch",
+    clientX: x,
+    clientY: 420,
+    bubbles: true,
+    cancelable: true,
+    button: 0,
+    buttons: type === "pointerup" ? 0 : 1
+  }));
+  send("pointerdown", 11, 110);
+  send("pointerdown", 12, 210);
+  send("pointermove", 12, 310);
+  send("pointerup", 12, 310);
+  send("pointerup", 11, 110);
+})()`);
+await delay(420);
+const mobilePinch = await evaluate(`({
+  before: ${JSON.stringify(pinchBefore)},
+  after: window.__LUNAR_FARSIDE_DEBUG__?.read().zoomTarget,
+  zoom: window.__LUNAR_FARSIDE_DEBUG__?.read().zoom,
+  errors: ${JSON.stringify(errors)}
+})`);
+
 await screenshot("lunar-farside-mobile.png");
 
 console.log(
@@ -396,6 +426,7 @@ console.log(
       manualActive,
       interaction,
       mobile,
+      mobilePinch,
       errors
     },
     null,

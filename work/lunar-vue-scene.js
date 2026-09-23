@@ -333,7 +333,10 @@ function loadLunarTextures(state, renderer, onProgress = () => {}) {
       finish(type, texture);
     };
     image.onerror = () => finish(`${type}-error`, null);
-    image.src = new URL(url, document.baseURI).href;
+    const resolvedUrl = url.startsWith("data:")
+      ? url
+      : url.replace(/^(?:\.\.\/)+assets\//, "./assets/");
+    image.src = new URL(resolvedUrl, document.baseURI).href;
   }
 
   loadLocalTexture(moonColorDataUrl, true, "color");
@@ -3453,6 +3456,10 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
   let dragging = false;
   let dragMoved = false;
   let lastPointer = { x: 0, y: 0 };
+  const activePointers = new Map();
+  let pinching = false;
+  let pinchDistance = 0;
+  const rotationVelocity = { x: 0, y: 0 };
   let hoveredFeature = null;
   let hoveredProbe = null;
 
@@ -3877,6 +3884,23 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
       + Math.sin(elapsed * 0.7) * 0.004
       + (instrumentState.id === "minirf" ? 0.025 : 0);
 
+    if (!dragging && !pinching) {
+      moonPivot.rotation.y += rotationVelocity.y;
+      moonPivot.rotation.x = clamp(
+        moonPivot.rotation.x + rotationVelocity.x,
+        -0.56,
+        0.56
+      );
+      const inertiaDecay = Math.exp(-delta * 3.2);
+      rotationVelocity.y *= inertiaDecay;
+      rotationVelocity.x *= inertiaDecay;
+    }
+    instrumentState.zoom = THREE.MathUtils.lerp(
+      instrumentState.zoom,
+      instrumentState.zoomTarget,
+      1 - Math.exp(-delta * 9)
+    );
+
     updateInstrument(delta);
     updateProbes(delta, elapsed);
     updateFeatureMarkers(delta);
@@ -3933,24 +3957,79 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
   canvas.addEventListener("pointerdown", (event) => {
     if (event.button !== 0) return;
     updatePointer(event);
+    if (event.pointerType === "touch") {
+      activePointers.set(event.pointerId, {
+        x: event.clientX,
+        y: event.clientY
+      });
+    }
+    if (activePointers.size >= 2) {
+      const points = Array.from(activePointers.values());
+      pinchDistance = Math.hypot(
+        points[0].x - points[1].x,
+        points[0].y - points[1].y
+      );
+      pinching = true;
+      dragging = false;
+      dragMoved = true;
+      rotationVelocity.x = 0;
+      rotationVelocity.y = 0;
+      try {
+        canvas.setPointerCapture(event.pointerId);
+      } catch {
+        // Synthetic touch events used by tests do not have an active pointer.
+      }
+      return;
+    }
     dragging = true;
     dragMoved = false;
     lastPointer = { x: event.clientX, y: event.clientY };
-    canvas.setPointerCapture(event.pointerId);
+    try {
+      canvas.setPointerCapture(event.pointerId);
+    } catch {
+      // Synthetic touch events used by tests do not have an active pointer.
+    }
     onPointer({ visible: false });
     canvas.style.cursor = "grabbing";
   });
 
   canvas.addEventListener("pointermove", (event) => {
     updatePointer(event);
+    if (activePointers.has(event.pointerId)) {
+      activePointers.set(event.pointerId, {
+        x: event.clientX,
+        y: event.clientY
+      });
+    }
+    if (pinching && activePointers.size >= 2) {
+      const points = Array.from(activePointers.values());
+      const nextDistance = Math.hypot(
+        points[0].x - points[1].x,
+        points[0].y - points[1].y
+      );
+      if (pinchDistance > 0 && nextDistance > 0) {
+        const zoomFactor = nextDistance / pinchDistance;
+        instrumentState.zoomTarget = clamp(
+          instrumentState.zoomTarget * zoomFactor,
+          1,
+          TELESCOPE_MAX_ZOOM
+        );
+      }
+      pinchDistance = nextDistance;
+      dragMoved = true;
+      lastInteraction = performance.now();
+      return;
+    }
     if (dragging) {
       const deltaX = event.clientX - lastPointer.x;
       const deltaY = event.clientY - lastPointer.y;
       if (Math.hypot(deltaX, deltaY) > 1) {
         dragMoved = dragMoved || Math.hypot(deltaX, deltaY) > 4;
-        moonPivot.rotation.y += deltaX * 0.005;
+        rotationVelocity.y = deltaX * 0.005;
+        rotationVelocity.x = deltaY * 0.0036;
+        moonPivot.rotation.y += rotationVelocity.y;
         moonPivot.rotation.x = clamp(
-          moonPivot.rotation.x + deltaY * 0.0036,
+          moonPivot.rotation.x + rotationVelocity.x,
           -0.56,
           0.56
         );
@@ -3977,6 +4056,11 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
   });
 
   canvas.addEventListener("pointerup", (event) => {
+    activePointers.delete(event.pointerId);
+    if (activePointers.size < 2) {
+      pinching = false;
+      pinchDistance = 0;
+    }
     if (!dragging) return;
     const hitProbe = raycastProbe();
     const hitFeature = hitProbe === null ? raycastFeature() : null;
@@ -4011,6 +4095,13 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
     }
   });
 
+  canvas.addEventListener("pointercancel", (event) => {
+    activePointers.delete(event.pointerId);
+    pinching = false;
+    pinchDistance = 0;
+    dragging = false;
+  });
+
   canvas.addEventListener("wheel", (event) => {
     event.preventDefault();
     const zoomFactor = Math.exp(-event.deltaY * 0.00125);
@@ -4019,7 +4110,6 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
       1,
       TELESCOPE_MAX_ZOOM
     );
-    instrumentState.zoom = instrumentState.zoomTarget;
     lastInteraction = performance.now();
     const profile = INSTRUMENT_PROFILES[instrumentState.id] || INSTRUMENT_PROFILES.lroc;
     setState(
@@ -4286,6 +4376,8 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
         hasEmissiveMap: Boolean(moonMaterial.emissiveMap)
       },
       camera: camera.position.toArray(),
+      zoom: instrumentState.zoom,
+      zoomTarget: instrumentState.zoomTarget,
       moonVisible: moonMesh.visible,
       moonMaterial: moonMaterial.type,
       markerCount: featureMarkers.length,

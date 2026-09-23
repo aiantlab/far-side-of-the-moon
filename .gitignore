@@ -3,6 +3,7 @@ node_modules/
 npm-debug.log*
 work/.chrome-*/
 work/web-build-test/
+work/web-path-test/
 work/*.png
 work/.obsidian-sync.log
 work/reference-hls-official.jpg
