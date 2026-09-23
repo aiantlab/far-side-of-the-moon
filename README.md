@@ -66,6 +66,12 @@ npm run build
 outputs/lunar-farside/app.bundle.js
 ```
 
+用于 GitHub Pages 等在线部署时，使用外链月球贴图的精简构建：
+
+```bash
+npm run build:web
+```
+
 ## Test
 
 ```bash

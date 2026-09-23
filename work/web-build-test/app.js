@@ -4648,3 +4648,140 @@ void main() {
       </div>
     </main>
   `};qc(UL).mount("#app");})();
+/*! Bundled license information:
+
+@vue/shared/dist/shared.esm-bundler.js:
+  (**
+  * @vue/shared v3.5.43
+  * (c) 2018-present Yuxi (Evan) You and Vue contributors
+  * @license MIT
+  **)
+
+@vue/reactivity/dist/reactivity.esm-bundler.js:
+  (**
+  * @vue/reactivity v3.5.43
+  * (c) 2018-present Yuxi (Evan) You and Vue contributors
+  * @license MIT
+  **)
+
+@vue/runtime-core/dist/runtime-core.esm-bundler.js:
+  (**
+  * @vue/runtime-core v3.5.43
+  * (c) 2018-present Yuxi (Evan) You and Vue contributors
+  * @license MIT
+  **)
+
+@vue/runtime-dom/dist/runtime-dom.esm-bundler.js:
+  (**
+  * @vue/runtime-dom v3.5.43
+  * (c) 2018-present Yuxi (Evan) You and Vue contributors
+  * @license MIT
+  **)
+
+@vue/compiler-core/dist/compiler-core.esm-bundler.js:
+  (**
+  * @vue/compiler-core v3.5.43
+  * (c) 2018-present Yuxi (Evan) You and Vue contributors
+  * @license MIT
+  **)
+
+@vue/compiler-dom/dist/compiler-dom.esm-bundler.js:
+  (**
+  * @vue/compiler-dom v3.5.43
+  * (c) 2018-present Yuxi (Evan) You and Vue contributors
+  * @license MIT
+  **)
+
+vue/dist/vue.esm-bundler.js:
+  (**
+  * vue v3.5.43
+  * (c) 2018-present Yuxi (Evan) You and Vue contributors
+  * @license MIT
+  **)
+
+animejs/dist/modules/core/consts.js:
+animejs/dist/modules/core/globals.js:
+animejs/dist/modules/core/helpers.js:
+animejs/dist/modules/core/transforms.js:
+animejs/dist/modules/core/colors.js:
+animejs/dist/modules/core/values.js:
+animejs/dist/modules/core/render.js:
+animejs/dist/modules/core/styles.js:
+animejs/dist/modules/core/clock.js:
+animejs/dist/modules/core/targets.js:
+animejs/dist/modules/core/units.js:
+  (**
+   * Anime.js - core - ESM
+   * @version v4.5.0
+   * @license MIT
+   * @copyright 2026 - Julian Garnier
+   *)
+
+animejs/dist/modules/adapters/registry.js:
+  (**
+   * Anime.js - adapters - ESM
+   * @version v4.5.0
+   * @license MIT
+   * @copyright 2026 - Julian Garnier
+   *)
+
+animejs/dist/modules/animation/additive.js:
+animejs/dist/modules/animation/composition.js:
+animejs/dist/modules/animation/animation.js:
+  (**
+   * Anime.js - animation - ESM
+   * @version v4.5.0
+   * @license MIT
+   * @copyright 2026 - Julian Garnier
+   *)
+
+animejs/dist/modules/engine/engine.js:
+  (**
+   * Anime.js - engine - ESM
+   * @version v4.5.0
+   * @license MIT
+   * @copyright 2026 - Julian Garnier
+   *)
+
+animejs/dist/modules/timer/timer.js:
+  (**
+   * Anime.js - timer - ESM
+   * @version v4.5.0
+   * @license MIT
+   * @copyright 2026 - Julian Garnier
+   *)
+
+animejs/dist/modules/easings/none.js:
+animejs/dist/modules/easings/eases/parser.js:
+  (**
+   * Anime.js - easings - ESM
+   * @version v4.5.0
+   * @license MIT
+   * @copyright 2026 - Julian Garnier
+   *)
+
+animejs/dist/modules/timeline/position.js:
+animejs/dist/modules/timeline/timeline.js:
+  (**
+   * Anime.js - timeline - ESM
+   * @version v4.5.0
+   * @license MIT
+   * @copyright 2026 - Julian Garnier
+   *)
+
+animejs/dist/modules/index.js:
+  (**
+   * Anime.js - ESM
+   * @version v4.5.0
+   * @license MIT
+   * @copyright 2026 - Julian Garnier
+   *)
+
+three/build/three.core.js:
+three/build/three.module.js:
+  (**
+   * @license
+   * Copyright 2010-2026 Three.js Authors
+   * SPDX-License-Identifier: MIT
+   *)
+*/

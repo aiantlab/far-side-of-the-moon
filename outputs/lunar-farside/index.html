@@ -1129,6 +1129,37 @@
       font-weight: 800;
     }
 
+    .boot-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-content: center;
+      justify-items: center;
+      gap: 10px;
+      background: var(--void);
+      color: var(--ink);
+      font-family: var(--mono-font);
+      transition: opacity 180ms ease;
+    }
+
+    .boot-screen strong {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .boot-screen span {
+      color: var(--muted);
+      font-size: 0.58rem;
+    }
+
+    html.app-ready .boot-screen {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
     #app {
       width: 100%;
       height: 100%;
@@ -1308,7 +1339,12 @@
   </style>
 </head>
 <body>
+  <div class="boot-screen">
+    <strong>Far Side of the Moon</strong>
+    <span>Loading lunar observatory...</span>
+  </div>
   <div id="app"></div>
-<script src="./app.bundle.js?v=81"></script>
+<link rel="preload" href="./app.bundle.js?v=82" as="script">
+<script src="./app.bundle.js?v=82" onload="document.documentElement.classList.add('app-ready')"></script>
 </body>
 </html>

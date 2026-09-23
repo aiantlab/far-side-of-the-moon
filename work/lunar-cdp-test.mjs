@@ -12,7 +12,7 @@ const chromePath = process.env.CHROME_PATH || (
       : "google-chrome"
 );
 const port = 9340;
-const pageUrl = `${pathToFileURL(
+const pageUrl = process.env.LUNAR_TEST_URL || `${pathToFileURL(
   path.join(projectRoot, "outputs", "lunar-farside", "index.html")
 ).href}?full-motion=1`;
 const userDataDir = path.join(projectRoot, "work", ".chrome-lunar-test");
