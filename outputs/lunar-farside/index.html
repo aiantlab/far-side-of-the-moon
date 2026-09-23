@@ -1132,49 +1132,6 @@
       font-weight: 800;
     }
 
-    .boot-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 60;
-      display: grid;
-      place-content: center;
-      justify-items: center;
-      gap: 10px;
-      background: var(--void);
-      color: var(--ink);
-      font-family: var(--mono-font);
-      transition: opacity 180ms ease;
-    }
-
-    .boot-screen strong {
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .boot-open {
-      color: #ffffff;
-      font-family: var(--display-font) !important;
-      font-size: 3.2rem !important;
-      font-weight: 400 !important;
-      letter-spacing: 0 !important;
-      line-height: 0.9;
-      text-shadow:
-        0 0 18px rgb(255 255 255 / 20%),
-        0 0 42px rgb(255 122 69 / 18%);
-    }
-
-    .boot-screen span {
-      color: var(--muted);
-      font-size: 0.58rem;
-    }
-
-    html.app-ready .boot-screen {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
     #app {
       width: 100%;
       height: 100%;
@@ -1354,14 +1311,10 @@
   </style>
 </head>
 <body>
-  <div class="boot-screen">
-    <strong class="boot-open">OPEN</strong>
-    <span>Far Side of the Moon</span>
-  </div>
   <div id="app"></div>
 <link rel="preload" href="./app.bundle.js?v=85" as="script">
 <link rel="preload" href="./assets/moon-lroc-color-1536.webp" as="image" type="image/webp">
 <link rel="preload" href="./assets/moon-lola-elevation-1k.webp" as="image" type="image/webp">
-<script type="module" src="./app.bundle.js?v=85" onload="document.documentElement.classList.add('app-ready')"></script>
+<script type="module" src="./app.bundle.js?v=85"></script>
 </body>
 </html>
