@@ -4,7 +4,7 @@ import moonColorDataUrl from "../outputs/lunar-farside/assets/moon-lroc-color-15
 import moonElevationDataUrl from "../outputs/lunar-farside/assets/moon-lola-elevation-1k.webp";
 
 const MOON_RADIUS = 3.28;
-const TELESCOPE_MIN_ZOOM = 0.35;
+const TELESCOPE_MIN_ZOOM = 0.3;
 const TELESCOPE_MAX_ZOOM = 6;
 const EARTH_POSITION = new THREE.Vector3(0, -1.8, -18);
 
@@ -3919,7 +3919,7 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
 
     const baseDistance = instrumentState.zoom < 1
       ? THREE.MathUtils.lerp(
-          17.2,
+          18.5,
           10.6,
           (instrumentState.zoom - TELESCOPE_MIN_ZOOM)
             / (1 - TELESCOPE_MIN_ZOOM)
