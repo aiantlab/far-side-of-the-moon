@@ -4,6 +4,7 @@ import moonColorDataUrl from "../outputs/lunar-farside/assets/moon-lroc-color-15
 import moonElevationDataUrl from "../outputs/lunar-farside/assets/moon-lola-elevation-1k.webp";
 
 const MOON_RADIUS = 3.28;
+const TELESCOPE_MIN_ZOOM = 0.35;
 const TELESCOPE_MAX_ZOOM = 6;
 const EARTH_POSITION = new THREE.Vector3(0, -1.8, -18);
 
@@ -3916,8 +3917,18 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
       }
     }
 
-    const zoomProgress = (instrumentState.zoom - 1) / (TELESCOPE_MAX_ZOOM - 1);
-    const baseDistance = THREE.MathUtils.lerp(10.6, 5.05, zoomProgress);
+    const baseDistance = instrumentState.zoom < 1
+      ? THREE.MathUtils.lerp(
+          17.2,
+          10.6,
+          (instrumentState.zoom - TELESCOPE_MIN_ZOOM)
+            / (1 - TELESCOPE_MIN_ZOOM)
+        )
+      : THREE.MathUtils.lerp(
+          10.6,
+          5.05,
+          (instrumentState.zoom - 1) / (TELESCOPE_MAX_ZOOM - 1)
+        );
     const targetDistance = baseDistance * instrumentState.distanceScale;
     const cameraResponse = 1 - Math.exp(-delta * 3.5);
     if (roverState.active) {
@@ -4011,7 +4022,7 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
         const zoomFactor = nextDistance / pinchDistance;
         instrumentState.zoomTarget = clamp(
           instrumentState.zoomTarget * zoomFactor,
-          1,
+          TELESCOPE_MIN_ZOOM,
           TELESCOPE_MAX_ZOOM
         );
       }
@@ -4107,7 +4118,7 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
     const zoomFactor = Math.exp(-event.deltaY * 0.00125);
     instrumentState.zoomTarget = clamp(
       instrumentState.zoomTarget * zoomFactor,
-      1,
+      TELESCOPE_MIN_ZOOM,
       TELESCOPE_MAX_ZOOM
     );
     lastInteraction = performance.now();
@@ -4225,6 +4236,8 @@ export function createLunarFarSideScene(canvas, hooks = {}) {
     mapped = 37;
     sampleCount = 0;
     combo = 1;
+    instrumentState.zoom = 1;
+    instrumentState.zoomTarget = 1;
     activeFeatureIndex = 0;
     activeProbeIndex = 0;
     surveyedByRegion.clear();
